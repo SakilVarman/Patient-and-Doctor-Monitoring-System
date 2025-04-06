@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediTrack</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <header>
+        <img src="Images/logo1.jpg" alt="Hospital Logo" class="logo">
+        <h1 class="heading">Medi-Track</h1>
+        <nav>
+            <a href="test.html">Home</a>
+            <a href="About.html">About Us</a>
+            <a href="Services.html">Services</a>
+            <a href="Contact.html">Contact</a>
+        </nav>
+        <button class="cta-button">Emergency Help</button>
+    </header>
+
+    <main>
+        <section id="patient-details">
+            <h2>Patient Details</h2>
+            <div class="patient-profile">
+                <img src="Images/patient.png" alt="Patient Photo" class="patient-photo">
+                <ul class="patient-info">
+                    <li><strong>Name:</strong> Vijay</li>
+                    <li><strong>Age:</strong> 45</li>
+                    <li><strong>Health Problems:</strong> Hypertension, Diabetes</li>
+                    <li><strong>Funding Details:</strong> Private Health Insurance (ABC Health), WorkCover</li>
+                    <li><strong>Specialist Contact:</strong> Dr. Karthik (Cardiologist)</li>
+                    <li><strong>Contact:</strong> 9698741251</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="calendar-section">
+            <h2>Medication Calendar</h2>
+            <div id="calendar-header">
+                <button id="prev-month">&lt;</button>
+                <h3 id="calendar-month-year"></h3>
+                <button id="next-month">&gt;</button>
+            </div>
+            <div id="calendar"></div>
+        </section>
+
+        <section id="medication-details">
+            <h2>Medication Details</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medication Name</th>
+                        <th>Dosage</th>
+                        <th>Frequency</th>
+                        <th>Time to Take</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Losartan</td>
+                        <td>50mg</td>
+                        <td>Once daily</td>
+                        <td>8:00 AM</td>
+                    </tr>
+                    <tr>
+                        <td>Metformin</td>
+                        <td>500mg</td>
+                        <td>Twice daily</td>
+                        <td>8:00 AM and 8:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Insulin</td>
+                        <td>10 units</td>
+                        <td>Before meals</td>
+                        <td>Before breakfast, lunch, and dinner</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Next Doctor's Visit:</strong> March 10, 2025 | Time: 10:00 AM</p>
+        </section>
+
+        <section id="acknowledgment">
+            <h2>Acknowledgment</h2>
+            <form id="acknowledgment-form">
+                <label for="medication-taken">Have you taken your medication?</label>
+                <select id="medication-taken">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="notification" class="hidden">
+                <p>Notification sent regarding missed medication.</p>
+            </div>
+        </section>
+
+        <section id="nearby-hospitals">
+            <h2>Nearby Hospitals</h2>
+            <ul>
+                <li>City Hospital</li>
+                <li>Health Care Center</li>
+                <li>General Medical Clinic</li>
+                <li>Wellness Hospital</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MediTrack System</p>
+    </footer>
+
+    <script src="test.js"></script>
+</body>
+</html>

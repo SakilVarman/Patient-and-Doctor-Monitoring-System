@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="doctor.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Doctor Monitoring System</title>
+</head>
+<body>
+    <header>
+        <h1 class="heading">D Medi-Track</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#patients" id="patients-link">Patients</a>
+            <a href="#contact" id="contact-link">Contact</a>
+        </nav>
+        <button class="cta-button">Emergency Assistance</button>
+    </header>
+
+    <main>
+        <section id="search-section">
+            <h2>Search for Patient</h2>
+            <input type="text" id="patient-search" placeholder="Enter patient name..." />
+            <button id="search-button">Search</button>
+        </section>
+
+        <section id="patient-list-section" class="hidden">
+            <h2>Patient List</h2>
+            <ul id="patient-list"></ul>
+        </section>
+
+        <section id="patient-details-section" class="hidden">
+            <h2>Patient Details</h2>
+            <div id="patient-info"></div>
+
+            <h2>Medication Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medication Name</th>
+                        <th>Dosage</th>
+                        <th>Frequency</th>
+                        <th>Time to Take</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="medication-list"></tbody>
+            </table>
+            <button id="save-updates" class="hidden">Save Updates</button>
+            <button id="back-to-list">Back to Patient List</button>
+            <canvas id="medication-chart"></canvas>
+        </section>
+
+        <section id="contact-section" class="hidden">
+            <h2>Contact Information</h2>
+            <div id="contact-info">
+                <p><strong>Doctor:</strong> Dr. Karthik</p>
+                <p><strong>Hospital:</strong> City Hospital</p>
+                <p><strong>Contact:</strong> 969871251</p>
+                <p><strong>Email:</strong> contact@cityhospital.com</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; Doctor Monitoring System</p>
+    </footer>
+
+    <script src="doctor.js"></script>
+</body>
+</html>

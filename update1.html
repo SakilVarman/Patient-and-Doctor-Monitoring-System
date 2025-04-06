@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Medication Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            width: 90%;
+            margin: 20px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e1e1;
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            color: #34495e;
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .controls button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .controls button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-settings {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .time-settings div {
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .time-settings label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="time"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            width: 180px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input[type="time"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        .day {
+            padding: 20px;
+            text-align: center;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .day:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .slot {
+            margin: 10px 0;
+            padding: 12px;
+            font-weight: 500;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .slot:hover {
+            transform: scale(1.05);
+        }
+
+        .morning { background: #f0f4f8; }
+        .afternoon { background: #f9f9f9; }
+        .evening { background: #f2f3f4; }
+        .taken { background: #4caf50 !important; color: white; }
+        .missed { background: #f44336 !important; color: white; }
+
+        @media (max-width: 768px) {
+            .calendar {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls button {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <h1>Medication Tracker</h1>
+
+        <div class="time-settings">
+            <div>
+                <label for="morning-time">Morning Dose:</label>
+                <input type="time" id="morning-time" value="08:00" onchange="setCustomTime('morning', this.value)">
+            </div>
+            <div>
+                <label for="afternoon-time">Afternoon Dose:</label>
+                <input type="time" id="afternoon-time" value="14:00" onchange="setCustomTime('afternoon', this.value)">
+            </div>
+            <div>
+                <label for="evening-time">Evening Dose:</label>
+                <input type="time" id="evening-time" value="20:00" onchange="setCustomTime('evening', this.value)">
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="setStatus(true)">Successful Dose</button>
+            <button onclick="setStatus(false)">Unsuccessful Dose</button>
+            <button onclick="previousMonth()">&lt; Previous</button>
+            <h2 id="current-month"></h2>
+            <button onclick="nextMonth()">Next &gt;</button>
+        </div>
+
+        <div class="calendar" id="calendar"></div>
+    </div>
+
+    <script>
+        let medicationLog = JSON.parse(localStorage.getItem('medicationLog')) || {};
+        let customTimes = JSON.parse(localStorage.getItem('customTimes')) || {
+            morning: "08:00:00",
+            afternoon: "14:00:00",
+            evening: "20:00:00"
+        };
+        let currentDate = new Date();
+        let selectedStatus = true; // true for successful, false for unsuccessful
+
+        // Initialize time inputs with saved values
+        document.getElementById('morning-time').value = customTimes.morning.slice(0, 5);
+        document.getElementById('afternoon-time').value = customTimes.afternoon.slice(0, 5);
+        document.getElementById('evening-time').value = customTimes.evening.slice(0, 5);
+
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            document.getElementById('current-month').textContent = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'day';
+                dayElement.innerHTML = `<strong>${day}</strong>`;
+                const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+                ['morning', 'afternoon', 'evening'].forEach(time => {
+                    const slot = document.createElement('div');
+                    slot.className = `slot ${time}`;
+                    slot.textContent = time;
+                    if (medicationLog[dateString] && medicationLog[dateString][time] !== undefined) {
+                        slot.classList.add(medicationLog[dateString][time] ? 'taken' : 'missed');
+                    }
+                    slot.addEventListener('click', () => markDose(dateString, time, slot));
+                    dayElement.appendChild(slot);
+                });
+
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        function markDose(date, time, element) {
+            if (!medicationLog[date]) medicationLog[date] = {};
+            medicationLog[date][time] = selectedStatus;
+            element.classList.toggle('taken', selectedStatus);
+            element.classList.toggle('missed', !selectedStatus);
+            localStorage.setItem('medicationLog', JSON.stringify(medicationLog));
+        }
+
+        function setStatus(status) {
+            selectedStatus = status;
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+        }
+
+        function setCustomTime(timeOfDay, timeValue) {
+            customTimes[timeOfDay] = timeValue + ":00"; // append seconds
+            localStorage.setItem('customTimes', JSON.stringify(customTimes));
+            scheduleAlerts(); // Reschedule alerts based on new times
+        }
+
+        function scheduleAlerts() {
+            Object.entries(customTimes).forEach(([timeName, timeValue]) => {
+                const now = new Date();
+                const alertTime = new Date();
+                const [hours, minutes, seconds] = timeValue.split(":").map(Number);
+                alertTime.setHours(hours, minutes, seconds, 0);
+
+                if (alertTime > now) {
+                    setTimeout(() => {
+                        if (Notification.permission === 'granted') {
+                            new Notification(`Reminder: It's time to take your ${timeName} medication!`);
+                        } else if (Notification.permission !== 'denied') {
+                            Notification.requestPermission().then(permission => {
+                                if (permission === 'granted') {
+                                    new Notification(`Reminder: It's time to take your ${timeName} medication!`);
+                                }
+                            });
+                        }
+                    }, alertTime - now);
+                }
+            });
+        }
+
+        // Request notification permission on page load
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+
+        generateCalendar();
+        scheduleAlerts();
+    </script>
+</body>
+</html>
