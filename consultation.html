@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Consultation - MediTrack</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8fb;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #007bff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #confirmation {
+      margin-top: 15px;
+      background-color: #e0ffe0;
+      color: #2b7a2b;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MediTrack - Doctor Consultation</h1>
+  </header>
+
+  <main>
+    <h2>Book a Consultation</h2>
+    <form id="consultationForm">
+      <label for="patientName">Full Name:</label>
+      <input type="text" id="patientName" required />
+
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" required />
+
+      <label for="specialist">Choose Specialist:</label>
+      <select id="specialist" required>
+        <option value="">--Select--</option>
+        <option value="General Physician">General Physician</option>
+        <option value="Cardiologist">Cardiologist</option>
+        <option value="Dermatologist">Dermatologist</option>
+        <option value="Neurologist">Neurologist</option>
+      </select>
+
+      <label for="symptoms">Symptoms / Concern:</label>
+      <textarea id="symptoms" rows="4" required></textarea>
+
+      <button type="submit">Book Consultation</button>
+    </form>
+
+    <div id="confirmation">Your consultation has been booked successfully!</div>
+  </main>
+
+  <script>
+    document.getElementById("consultationForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("patientName").value;
+      const email = document.getElementById("email").value;
+      const specialist = document.getElementById("specialist").value;
+      const symptoms = document.getElementById("symptoms").value;
+
+      if (name && email && specialist && symptoms) {
+        document.getElementById("confirmation").style.display = "block";
+
+        // Optional: Save or send this data to backend later
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>

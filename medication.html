@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediTrack - Medication Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f3;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+    }
+    .calendar {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    #calendar-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    .day {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .slot {
+      padding: 5px;
+      margin-top: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.85em;
+    }
+    .taken {
+      background-color: #28a745;
+      color: white;
+    }
+    .missed {
+      background-color: #dc3545;
+      color: white;
+    }
+    .notification {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9ffe8;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MediTrack - Medication Tracking</h1>
+  </header>
+
+  <div class="calendar">
+    <div id="calendar-controls">
+      <button id="prev-month">Previous</button>
+      <div id="calendar-month-year"></div>
+      <button id="next-month">Next</button>
+    </div>
+    <div id="calendar" class="calendar-days"></div>
+
+    <div style="margin-top: 20px;">
+      <strong>Set Dose Status:</strong>
+      <button id="successful-dose">Taken</button>
+      <button id="unsuccessful-dose">Missed</button>
+    </div>
+
+    <form id="acknowledgment-form">
+      <label for="medication-taken">Acknowledge Medication:</label>
+      <select id="medication-taken">
+        <option value="morning">Morning</option>
+        <option value="afternoon">Afternoon</option>
+        <option value="evening">Evening</option>
+      </select>
+      <button type="submit">Send Notification</button>
+    </form>
+
+    <div id="notification" class="notification hidden">
+      <p></p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const monthYear = document.getElementById("calendar-month-year");
+      const calendar = document.getElementById("calendar");
+      const prevBtn = document.getElementById("prev-month");
+      const nextBtn = document.getElementById("next-month");
+
+      let date = new Date();
+      let selectedStatus = true;
+      let medicationLog = JSON.parse(localStorage.getItem("medicationLog")) || {};
+      let customTimes = {
+        morning: "08:00:00",
+        afternoon: "14:00:00",
+        evening: "20:00:00"
+      };
+
+      function renderCalendar() {
+        calendar.innerHTML = "";
+        monthYear.textContent = date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+        let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        let daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+          calendar.innerHTML += "<div></div>";
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+          const day = document.createElement("div");
+          day.className = "day";
+          day.innerHTML = `<strong>${i}</strong>`;
+          const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+
+          ["morning", "afternoon", "evening"].forEach((time) => {
+            const slot = document.createElement("div");
+            slot.className = `slot ${time}`;
+            slot.textContent = time;
+
+            if (medicationLog[dateString] && medicationLog[dateString][time] !== undefined) {
+              slot.classList.add(medicationLog[dateString][time] ? "taken" : "missed");
+            }
+
+            slot.addEventListener("click", () => {
+              if (!medicationLog[dateString]) medicationLog[dateString] = {};
+              medicationLog[dateString][time] = selectedStatus;
+              slot.classList.toggle("taken", selectedStatus);
+              slot.classList.toggle("missed", !selectedStatus);
+              localStorage.setItem("medicationLog", JSON.stringify(medicationLog));
+            });
+
+            day.appendChild(slot);
+          });
+
+          calendar.appendChild(day);
+        }
+      }
+
+      function scheduleAlerts() {
+        Object.entries(customTimes).forEach(([timeName, timeValue]) => {
+          const now = new Date();
+          const alertTime = new Date();
+          const [hours, minutes, seconds] = timeValue.split(":").map(Number);
+          alertTime.setHours(hours, minutes, seconds, 0);
+
+          if (alertTime > now) {
+            setTimeout(() => {
+              if (Notification.permission === "granted") {
+                new Notification(`Reminder: It's time to take your ${timeName} medication!`);
+              } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then((permission) => {
+                  if (permission === "granted") {
+                    new Notification(`Reminder: It's time to take your ${timeName} medication!`);
+                  }
+                });
+              }
+            }, alertTime - now);
+          }
+        });
+      }
+
+      prevBtn.addEventListener("click", () => {
+        date.setMonth(date.getMonth() - 1);
+        renderCalendar();
+      });
+
+      nextBtn.addEventListener("click", () => {
+        date.setMonth(date.getMonth() + 1);
+        renderCalendar();
+      });
+
+      document.getElementById("acknowledgment-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        const selection = document.getElementById("medication-taken").value;
+        const notificationBox = document.getElementById("notification");
+
+        if (Notification.permission === "granted") {
+          new Notification(`You selected "${selection}" for medication.`);
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              new Notification(`You selected "${selection}" for medication.`);
+            }
+          });
+        }
+
+        notificationBox.classList.remove("hidden");
+        notificationBox.querySelector("p").textContent = `Notification sent regarding "${selection}" medication.`;
+      });
+
+      document.getElementById("successful-dose").addEventListener("click", () => selectedStatus = true);
+      document.getElementById("unsuccessful-dose").addEventListener("click", () => selectedStatus = false);
+
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+      }
+
+      renderCalendar();
+      scheduleAlerts();
+    });
+  </script>
+</body>
+</html>

@@ -15,6 +15,7 @@
             <a href="About.html">About Us</a>
             <a href="Services.html">Services</a>
             <a href="Contact.html">Contact</a>
+            <a href="Assistant.html">Assistance</a>
         </nav>
         <button class="cta-button">Emergency Help</button>
     </header>
@@ -37,12 +38,21 @@
 
         <section id="calendar-section">
             <h2>Medication Calendar</h2>
-            <div id="calendar-header">
+            <div class="calendar-nav">
                 <button id="prev-month">&lt;</button>
-                <h3 id="calendar-month-year"></h3>
+                <span id="calendar-month-year"></span>
                 <button id="next-month">&gt;</button>
             </div>
-            <div id="calendar"></div>
+            <div class="calendar-header">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div class="calendar" id="calendar"></div>
+        </section>
+
+        <section id="status-toggle">
+            <h3>Mark Medication Status</h3>
+            <button id="successful-dose">✔ Taken</button>
+            <button id="unsuccessful-dose">✖ Missed</button>
         </section>
 
         <section id="medication-details">

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Analytics - MediTrack</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef5fc;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    main {
+      max-width: 800px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 30px;
+    }
+    canvas {
+      max-width: 100%;
+    }
+    .info-box {
+      background: #f0f8ff;
+      border-left: 5px solid #007bff;
+      padding: 15px;
+      margin-top: 30px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MediTrack - Health Analytics</h1>
+  </header>
+
+  <main>
+    <h2>Your Health Trends</h2>
+    <canvas id="healthChart" width="400" height="200"></canvas>
+
+    <div class="info-box">
+      <strong>Insight:</strong> Your blood pressure has shown stable improvement over the last 6 months. Maintain your medication and daily walks!
+    </div>
+  </main>
+
+  <script>
+    const ctx = document.getElementById('healthChart').getContext('2d');
+    const healthChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'],
+        datasets: [{
+          label: 'Systolic Pressure',
+          data: [135, 130, 128, 125, 122, 120],
+          borderColor: '#007bff',
+          backgroundColor: 'rgba(0, 123, 255, 0.2)',
+          borderWidth: 2,
+          tension: 0.4
+        },
+        {
+          label: 'Diastolic Pressure',
+          data: [90, 88, 85, 83, 80, 78],
+          borderColor: '#28a745',
+          backgroundColor: 'rgba(40, 167, 69, 0.2)',
+          borderWidth: 2,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            enabled: true
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Appointment Scheduling - MediTrack</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff;
+    }
+    header {
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 12px;
+      border: none;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .confirmation {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #d4edda;
+      color: #155724;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MediTrack</h1>
+    <h2>Appointment Scheduling</h2>
+  </header>
+  <main>
+    <form id="appointment-form">
+      <label for="patient-name">Patient Name:</label>
+      <input type="text" id="patient-name" required />
+
+      <label for="doctor">Select Doctor:</label>
+      <select id="doctor" required>
+        <option value="">-- Choose Doctor --</option>
+        <option value="Dr. Smith">Dr. Smith - Cardiologist</option>
+        <option value="Dr. Kumar">Dr. Kumar - Neurologist</option>
+        <option value="Dr. Priya">Dr. Priya - General Physician</option>
+      </select>
+
+      <label for="date">Appointment Date:</label>
+      <input type="date" id="date" required />
+
+      <label for="time">Appointment Time:</label>
+      <input type="time" id="time" required />
+
+      <button type="submit">Book Appointment</button>
+    </form>
+
+    <div class="confirmation" id="confirmation-msg"></div>
+  </main>
+
+  <script>
+    document.getElementById("appointment-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("patient-name").value;
+      const doctor = document.getElementById("doctor").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+
+      const confirmationBox = document.getElementById("confirmation-msg");
+      confirmationBox.textContent = `Appointment booked for ${name} with ${doctor} on ${date} at ${time}.`;
+      confirmationBox.style.display = "block";
+
+      this.reset();
+    });
+  </script>
+</body>
+</html>
