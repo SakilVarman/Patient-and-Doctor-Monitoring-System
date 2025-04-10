@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MediTrack - Services</title>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         /* General Styles */
         body {
@@ -19,6 +21,7 @@
             padding: 20px;
             text-align: center;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -26,15 +29,24 @@
         .logo {
             height: 50px;
         }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
         nav a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 10px;
             font-size: 1.2em;
             transition: color 0.3s;
         }
         nav a:hover {
             color: #ffdd57;
+        }
+        nav a.active {
+            text-decoration: underline;
+            font-weight: bold;
         }
         .cta-button {
             background-color: #28a745;
@@ -71,6 +83,12 @@
             gap: 20px;
         }
         .service-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+        .service-card {
             background: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -105,6 +123,20 @@
             padding: 10px;
             margin-top: 20px;
         }
+
+        /* Responsive Navigation */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav {
+                margin-top: 10px;
+            }
+            .cta-button {
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -112,57 +144,88 @@
         <img src="Images/logo1.jpg" alt="Hospital Logo" class="logo">
         <h1 class="heading">Medi-Track</h1>
         <nav>
-            <a href="index.html">Home</a>
+            <a href="test.html">Home</a>
             <a href="about.html">About Us</a>
             <a href="services.html" class="active">Services</a>
             <a href="contact.html">Contact</a>
         </nav>
-        <button class="cta-button" onclick="alert('Emergency Help Activated!')">Emergency Help</button>
+        <button class="cta-button" aria-label="Activate Emergency Help" onclick="alert('Emergency Help Activated!')">Emergency Help</button>
     </header>
 
     <main>
         <h2>Our Services</h2>
         <div class="services-container">
-            <div class="service-card">
-                <div class="service-icon">💊</div>
+            <a href="MDServices/medication.html" class="service-card">
+                <div class="service-icon"><i class="fas fa-pills"></i></div>
                 <h3>Medication Tracking</h3>
                 <p>Keep track of prescriptions, dosages, and refill reminders to ensure medication adherence.</p>
-            </div>
+              </a>
+              
 
-            <div class="service-card">
-                <div class="service-icon">📅</div>
+              <a href="MDServices/appointment.html" class="service-card">
+                <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
+                
                 <h3>Appointment Scheduling</h3>
                 <p>Book, reschedule, and manage doctor appointments with ease through our integrated system.</p>
-            </div>
+            </a>
 
-            <div class="service-card">
-                <div class="service-icon">📋</div>
+            <a href="MDServices/records.html" class="service-card">
+                <div class="service-icon"><i class="fas fa-file-medical"></i></div>
                 <h3>Health Records Management</h3>
                 <p>Securely store and access patient medical history, test results, and reports anytime.</p>
-            </div>
+            </a>
 
-            <div class="service-card">
-                <div class="service-icon">🩺</div>
+            <a href="MDServices/consultation.html" class="service-card">
+                <div class="service-icon"><i class="fas fa-stethoscope"></i></div>
                 <h3>Doctor Consultation</h3>
                 <p>Get real-time online consultation with doctors for immediate medical guidance.</p>
-            </div>
+            </a>
 
-            <div class="service-card">
-                <div class="service-icon">📈</div>
+            <a href="MDServices/analytics.html" class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
                 <h3>Health Analytics</h3>
                 <p>Monitor health trends and receive personalized reports for better healthcare decisions.</p>
-            </div>
+            </a>
 
-            <div class="service-card">
-                <div class="service-icon">⚕️</div>
+            <a href="MDServices/emergency.html" class="service-card">
+                <div class="service-icon"><i class="fas fa-ambulance"></i></div>
                 <h3>24/7 Emergency Assistance</h3>
                 <p>Access instant medical help and ambulance services in case of an emergency.</p>
-            </div>
+            </a>
         </div>
     </main>
-
+    
     <footer>
         <p>&copy; 2025 MediTrack - All Rights Reserved</p>
     </footer>
+    <script>
+        function triggerEmergencyNotification() {
+            if (Notification.permission === "granted") {
+                new Notification("🚨 Emergency Help Activated!", {
+                    body: "Medical support has been alerted. Please stay calm.",
+                    icon: "Images/logo1.jpg"
+                });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification("🚨 Emergency Help Activated!", {
+                            body: "Medical support has been alerted. Please stay calm.",
+                            icon: "Images/logo1.jpg"
+                        });
+                    } else {
+                        alert("Emergency Help Activated!");
+                    }
+                });
+            } else {
+                alert("Emergency Help Activated!");
+            }
+        }
+    
+        // Ask permission upfront if not already granted
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    </script>
+    
 </body>
 </html>
